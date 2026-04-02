@@ -1,7 +1,20 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { PlusIcon, UploadCloudIcon } from 'lucide-react'
+import { dummyResumeData } from "../assets/assets";
 
 const Dashboard = () =>{
+
+    const colors = ["#9333ea","#d97706", "#dc2626", "#0284c7", "#16a34a"]
+    
+    const [allResumes, setAllResumes] = userState([])
+    
+    const loadAllResumes = async () =>{
+        setAllResumes(dummyResumeData)
+    }
+
+    useEffect(()=>{
+        loadAllResumes()
+    },[])
     return(
         <div>
             <div className="max-w-7xl mx-auto px-4 py-8">
@@ -21,6 +34,12 @@ const Dashboard = () =>{
 
 {/* to spearete existing resume from tools */}
                 <hr className="border-slate-300 my-6 sm:w-[305px]"/>
+
+                <div className="grid grid-cols-2 sm:flex flex-wrap gap-4">
+                    {allResumes.map(()=>{
+
+                    })}
+                </div>
             </div>
         </div>
     )
