@@ -7,6 +7,10 @@ const Dashboard = () =>{
     const colors = ["#9333ea","#d97706", "#dc2626", "#0284c7", "#16a34a"]
     
     const [allResumes, setAllResumes] = useState([])
+    // adding pop up for creating resume
+    const [showCreateResume, setShowCreateResume] = useState(false)
+    // adding pop up for upload resume 
+    const [showUploadRsume, setShowUploadResume] = useState(false)
     
     const loadAllResumes = async () =>{
         setAllResumes(dummyResumeData)
@@ -53,6 +57,12 @@ const Dashboard = () =>{
                         )
                     })}
                 </div>
+
+                {showCreateResume && (
+                    <form action="" className="fixed insert-0 bg-black/70 backdrop-blur bg-opacity-50 z-10 flex items-center justify-center">
+
+                    </form>
+                )}
             </div>
         </div>
     )
