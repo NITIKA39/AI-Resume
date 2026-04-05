@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { PlusIcon, UploadCloudIcon, FilePenLineIcon, TrashIcon, PencilIcon, XIcon} from 'lucide-react'
 import { dummyResumeData } from "../assets/assets";
+import { useNavigate } from 'react-router-dom'
 
 const Dashboard = () =>{
 
@@ -16,12 +17,20 @@ const Dashboard = () =>{
     const [resume, setResume] = useState(null)
     //can edit the title of resume
     const [editResumeId, setEditResumeId] = useState('')
+
+    const navigate = useNavigate()
     
     const loadAllResumes = async () =>{
         setAllResumes(dummyResumeData)
     }
 
-    const createResume = async(event)
+    //after submitting we have to hide the pop up of title
+    const createResume = async(event) =>{
+        event.preventDefault()
+        setShowCreateResume(false)
+        //navigate the user to builder page so they can build resume after giving title
+
+    }
 
     useEffect(()=>{
         loadAllResumes()
