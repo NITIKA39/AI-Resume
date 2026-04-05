@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { PlusIcon, UploadCloudIcon, FilePenLineIcon, TrashIcon, PencilIcon} from 'lucide-react'
+import { PlusIcon, UploadCloudIcon, FilePenLineIcon, TrashIcon, PencilIcon, XIcon} from 'lucide-react'
 import { dummyResumeData } from "../assets/assets";
 
 const Dashboard = () =>{
@@ -11,10 +11,17 @@ const Dashboard = () =>{
     const [showCreateResume, setShowCreateResume] = useState(false)
     // adding pop up for upload resume 
     const [showUploadRsume, setShowUploadResume] = useState(false)
+    // to store the title of the resume
+    const [title, setTitle] = useState('')
+    const [resume, setResume] = useState(null)
+    //can edit the title of resume
+    const [editResumeId, setEditResumeId] = useState('')
     
     const loadAllResumes = async () =>{
         setAllResumes(dummyResumeData)
     }
+
+    const createResume = async(event)
 
     useEffect(()=>{
         loadAllResumes()
@@ -59,8 +66,16 @@ const Dashboard = () =>{
                 </div>
 
                 {showCreateResume && (
-                    <form action="" className="fixed insert-0 bg-black/70 backdrop-blur bg-opacity-50 z-10 flex items-center justify-center">
+                    <form onSubmit={createResume} onClick={()=> setShowCreateResume(false)} action="" className="fixed insert-0 bg-black/70 backdrop-blur bg-opacity-50 z-10 flex items-center justify-center">
+                        <div onClick={e=> e.stopPropagation()} className="relative bg-slate-50 border shadow-md rounded-lg w-full ax-w-sm p-6">
+                            <h2 className="text-xl font-bold mb-4">Create a Resume</h2>
 
+                            <input type="text" placeholder="Enter resume title" className="w-full px-4 py-2 mb-4 focus:border-indigo-600 ring-indigo-600" required/>
+
+                            <button className="w-full py-2 bg-indigo-600 text-white rounded hover:b-indigo-700 transition-colors">Create Resume</button>
+
+                            <XIcon className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer transition-colors" onClick={()=> {setShowCreateResume(false); setTitle('')}}/>
+                        </div>
                     </form>
                 )}
             </div>
