@@ -36,7 +36,21 @@ const Dashboard = () =>{
     const uploadResume = async(event) =>{
         event.preventDefault()
         setShowUploadResume(false)
-        navigate(`app/builder/resume123`)
+        navigate(`/app/builder/resume123`)
+    }
+
+    //edit func so can edit title of exiting resume available on website
+    const editTitle = async(event) =>{
+        event.preventDefault()
+    }
+
+    //func for deleting exisiting resume
+    const deleteResume = async(resumeID) =>{
+        const confirm = window.confirm('Are you sure you want to delete this resume?')
+        //will remove that resume id 
+        if(confirm){
+            setAllResumes(prev => prev.filter(resume=> resume._id !== resumeID))
+        }
     }
 
     useEffect(()=>{
@@ -68,15 +82,16 @@ const Dashboard = () =>{
                     {allResumes.map((resume, index)=>{
                         const baseColor = colors[index % colors.length];
                         return(
-                            <button key={index} className="relative w-full sm:max-w-36 h-48 flex flex-col items-center justify-center rounded-lg gap-2 border group hover:shadow-lg transition-all duartion-300 cursor-pointer" style={{background: `linear-gradient(135deg, ${baseColor}10,${baseColor}40)`,borderColor:`${baseColor}40`}}>
+                            // adding navigate fun for user to open resume which was built on our website
+                            <button key={index} onClick={()=> navigate(`/app/builder/${resume._id}`)} className="relative w-full sm:max-w-36 h-48 flex flex-col items-center justify-center rounded-lg gap-2 border group hover:shadow-lg transition-all duartion-300 cursor-pointer" style={{background: `linear-gradient(135deg, ${baseColor}10,${baseColor}40)`,borderColor:`${baseColor}40`}}>
                                 <FilePenLineIcon className="size-7 group-hover:scale-105 transition-all" styl={{color: baseColor}}/>
                                 <p className="text-sm group-hover:scale-105 transition-all px-2 text-center" style={{color: baseColor}}>{resume.title}</p>
                                 <p className="absolute bottom-1 text-[11px] text-slate-400 group-hover:text-slate-500 transition-all duration-300 px-2 text-center" style={{color:baseColor + '90'}}>
                                     Updated on {new Date(resume.updatedAt).toLocaleDateString()}
                                 </p>
-                                <div className="absolute top-1 right-1 group-hover:flex items-center hidden">
-                                    <TrashIcon className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"/>
-                                    <PencilIcon className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"/>
+                                <div onClick={e=>e.stopPropagation()} className="absolute top-1 right-1 group-hover:flex items-center hidden">
+                                    <TrashIcon onClick={()=>deleteResume(resume._id)} className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"/>
+                                    <PencilIcon onClick={()=> {setEditResumeId(resume._id); setTitle(resume.title)}} className="size-7 p-1.5 hover:bg-white/50 rounded text-slate-700 transition-colors"/>
                                 </div>
                             </button>
                         )
@@ -129,6 +144,21 @@ const Dashboard = () =>{
                     </form>
                 )
                 }
+
+{/* func to edit title of existing resume which was created by our website */}
+                {editResumeId && (
+                    <form onSubmit={editTitle} onClick={()=> setEditResumeId('')} action="" className="fixed inset-0 bg-black/70 backdrop-blur bg-opacity-50 z-10 flex items-center justify-center">
+                        <div onClick={e=> e.stopPropagation()} className="relative bg-slate-50 border shadow-md rounded-lg w-full max-w-sm p-6">
+                            <h2 className="text-xl font-bold mb-4">Edit Resume Title</h2>
+
+                            <input onChange={(e)=>setTitle(e.target.value)} value={title} type="text" placeholder="Enter resume title" className="w-full px-4 py-2 mb-4 focus:border-indigo-600 ring-indigo-600" required/>
+
+                            <button className="w-full py-2 bg-indigo-600 text-white rounded hover:b-indigo-700 transition-colors">Update</button>
+
+                            <XIcon className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 cursor-pointer transition-colors" onClick={()=> {setEditResumeId(''); setTitle('')}}/>
+                        </div>
+                    </form>
+                )}
             </div>
         </div>
     )
